@@ -23,11 +23,11 @@ namespace opponent {
     constexpr int HIGH_SCORE = 10;
 
     int pieceVal[] = 
-    { 
-        1, 0, 1,
-        0, 2, 0,
-        1, 0, 1
-    };
+        { 
+            1, 0, 1,
+            0, 2, 0,
+            1, 0, 1
+        };
 
     template<bool MAX>
     inline int alphaOmega
@@ -107,8 +107,6 @@ namespace opponent {
     (Board*, double&, double&, double&, Node*, Node*);
     Node* selectNode
     (Node*);
-    void randMove
-    (Board*, Alliance&);
 
 
     constexpr double UCB1
@@ -373,25 +371,6 @@ namespace opponent {
             { m = h; s = x; }
         }
         return s;
-    }
-
-
-    inline void randMove
-        (
-        Board* const b, /* The board.                                   */
-        Alliance& a     /* The starting alliance.                       */
-        )
-    {
-        /*
-         * Make a random move. 
-         * This is inefficient. 
-         * Do better.
-         */
-        int m;
-        do m = rand() % 9;
-        while
-        (b->occupiedSquare(m));
-        b->mark(a, m);
     }
 
 

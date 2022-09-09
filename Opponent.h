@@ -47,8 +47,8 @@ namespace opponent {
         // Tie !
         if (b->isFull()) return 0;
 
-        if(depth == 2) {
-            
+        if(depth == 2) 
+        {
             // Evaluate ?
             int s = 0;
             uint16_t bb; 
@@ -61,26 +61,34 @@ namespace opponent {
             return s;
         }
 
-        int score = MAX ? INT8_MIN : INT8_MAX;
-        uint16_t
-        bb = b->get<X>();
-        for (; bb; bb &= bb - 1) {
+        int score = MAX ? 
+            INT8_MIN : INT8_MAX;
+        uint16_t bb = b->get<X>();
+        for (; bb; bb &= bb - 1) 
+        {
             const int i = 
             8 - bit::bitScanFwd(bb);
-            if (MAX) {
+            if (MAX) 
+            {
                 b->mark<X>(i);
-                score = std::max(score,
-                    alphaOmega<false>(
+                score = std::max
+                (score,
+                    alphaOmega<false>
+                    (
                         b, depth + 1,
                         a, o
                     )
                 );
                 b->mark<X>(i);
                 a = score;
-            } else {
+            } 
+            else 
+            {
                 b->mark<O>(i);
-                score = std::min(score,
-                    alphaOmega<true>(
+                score = std::min
+                (score,
+                    alphaOmega<true>
+                    (
                         b, depth + 1,
                         a, o
                     )
@@ -253,7 +261,7 @@ namespace opponent {
                 ~x->a, x
             );
             b->mark(n->a, n->move);
-            new_simulate
+            simulate
             (   
                 b, winX, winO, 
                 total, x->a, n
@@ -264,7 +272,7 @@ namespace opponent {
     }
 
 
-    inline void new_simulate
+    inline void simulate
         (
         Board* const bx,  /* The board.                                 */
         double& winX,     /* The win count of x.                        */

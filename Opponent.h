@@ -278,44 +278,26 @@ namespace opponent {
          */
         int l;
 
+        constexpr int denom = 
+            INT8_MAX - INT8_MIN;
         if(ax == X) {
             l = -nega_ab<X>
             (
                 bx, 0,
                 INT8_MIN, INT8_MAX
             );
-            if(l == 0) 
-            {
-                winO += n->v = 0.5;
-                winX += 0.5;
-            }
-            else 
-            {
-                const double d = 0.5 / l;
-                winO += n->v = 
-                    (l > 0) * (1.0 - d) + 
-                    (l < 0) * -d;
-                winX += 1.0 - n->v;
-            }
+            winO += n->v = 
+                (l - INT8_MIN) / denom;
+            winX += 1.0 - n->v;
         } else {
             l = -nega_ab<O>
             (
                 bx, 0,
                 INT8_MIN, INT8_MAX
             );
-            if(l == 0) 
-            {
-                winO += n->v = 0.5;
-                winX += 0.5;
-            }
-            else 
-            {
-                const double d = 0.5 / l;
-                winX += n->v = 
-                    (l > 0) * (1.0 - d) + 
-                    (l < 0) * -d;
-                winO += 1.0 - n->v;
-            }
+            winX += n->v = 
+                (l - INT8_MIN) / denom;
+            winO += 1.0 - n->v;
         }
         total += n->n = 1.0;
     }

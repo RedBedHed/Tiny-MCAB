@@ -66,24 +66,62 @@ namespace opponent {
             return s;
         }
 
+        // int score = INT8_MIN;
+        // uint16_t bb = b->legalMoves();
+        // for (; bb; bb &= bb - 1) 
+        // {
+        //     const int i = 
+        //     8 - bitScanFwd(bb);
+        //     b->mark<A>(i);
+        //     score = std::max
+        //     (score,
+        //         -alpha_beta<~A>
+        //         (
+        //             b, depth + 1,
+        //             -o, -a
+        //         )
+        //     );
+        //     b->mark<A>(i);
+        //     a = score;
+        //     if (a >= o) return score;
+        // }
+        // return score;
+        
         int score = A == X ? 
             INT8_MIN : INT8_MAX;
-        uint16_t bb = b->get<A>();
+        uint16_t bb = b->legalMoves();
         for (; bb; bb &= bb - 1) 
         {
             const int i = 
             8 - bitScanFwd(bb);
-            b->mark<A>(i);
+            if constexpr (A == X) 
+            {
+                b->mark<X>(i);
                 score = std::max
                 (score,
-                    -alpha_beta<~A>
+                    alpha_beta<~A>
                     (
                         b, depth + 1,
-                        -a, -o
+                        a, o
                     )
                 );
-            b->mark<A>(i);
-            a = score;
+                b->mark<X>(i);
+                a = score;
+            } 
+            else 
+            {
+                b->mark<O>(i);
+                score = std::min
+                (score,
+                    alpha_beta<~A>
+                    (
+                        b, depth + 1,
+                        a, o
+                    )
+                );
+                b->mark<O>(i);
+                o = score;
+            }
             if (a >= o) return score;
         }
         return score;

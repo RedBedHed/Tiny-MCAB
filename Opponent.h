@@ -195,12 +195,8 @@ namespace opponent {
             if(x->x.empty())
             {
                 /**
-                 * Rollout lines
-                 * of play according
-                 * to a random Default
-                 * Policy. Expand
-                 * the current node
-                 * if it is promising.
+                 * Expand
+                 * the current node.
                  */
                 expand
                 (b, winX, winO, total, x);
@@ -211,7 +207,7 @@ namespace opponent {
              * (1) Selection.
              * Select a node
              * according to
-             * the UC Tree
+             * the UCT
              * policy.
              */
             x = selectNode(x);

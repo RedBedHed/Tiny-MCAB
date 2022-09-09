@@ -404,27 +404,6 @@ namespace opponent {
         int l = treeWalk(n, 0);
         std::cout << "Node Count:" << l << '\n';
         return (n = selectNode(n))->move;
-        // int score = INT8_MIN;
-        // int move = -1;
-        // uint16_t bb = b->legalMoves();
-        // for (; bb; bb &= bb - 1) 
-        // {
-        //     const int i = 
-        //     8 - bitScanFwd(bb);
-        //     b->mark<X>(i);
-        //     int u = -nega_ab<O>
-        //         (
-        //             b, 0,
-        //             INT8_MIN, INT8_MAX
-        //         );
-        //     std::cout << "YUP " << u << '\n';
-        //     if(u > score) {
-        //         score = u;
-        //         move = i;
-        //     }
-        //     b->mark<X>(i);
-        // }
-        // return move;
     }
 }
 

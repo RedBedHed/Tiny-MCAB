@@ -53,11 +53,19 @@ namespace opponent {
             int s = 0;
             uint16_t bb; 
             for 
-            (bb = b->get<X>(); bb; bb &= bb - 1)
-                s += pieceVal[bit::bitScanFwd(bb)];
+            (bb = b->get<X>(); 
+                bb; bb &= bb - 1)
+                s += pieceVal
+                [
+                    bit::bitScanFwd(bb)
+                ];
             for 
-            (bb = b->get<O>(); bb; bb &= bb - 1)
-                s -= pieceVal[bit::bitScanFwd(bb)];
+            (bb = b->get<O>(); 
+                bb; bb &= bb - 1)
+                s -= pieceVal
+                [
+                    bit::bitScanFwd(bb)
+                ];
             return s;
         }
 

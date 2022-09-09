@@ -22,7 +22,7 @@ namespace opponent {
 
     constexpr int HIGH_SCORE = 10;
 
-    int pieceVal[] = 
+    constexpr uint8_t pieceVal[] = 
         { 
             1, 0, 1,
             0, 2, 0,

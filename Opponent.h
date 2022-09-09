@@ -31,7 +31,7 @@ namespace opponent {
         };
 
     template<Alliance A>
-    inline int alpha_beta
+    inline int nega_ab
         (
         Board *const b,
         const int depth,
@@ -40,10 +40,10 @@ namespace opponent {
         ) 
     {
         // Maximizer (computer) wins.
-        if (b->hasVictory<X>())
+        if (b->hasVictory<A>())
             return HIGH_SCORE - depth;
         // Minimizer (user) wins.
-        if (b->hasVictory<O>())
+        if (b->hasVictory<~A>())
             return depth - HIGH_SCORE;
         // Tie !
         if (b->isFull()) return 0;
@@ -54,74 +54,35 @@ namespace opponent {
             int s = 0;
             uint16_t bb; 
             for 
-            (bb = b->get<X>(); 
+            (bb = b->get<A>(); 
                 bb; bb &= bb - 1)
                 s += pieceVal
                 [bitScanFwd(bb)];
             for 
-            (bb = b->get<O>(); 
+            (bb = b->get<~A>(); 
                 bb; bb &= bb - 1)
                 s -= pieceVal
                 [bitScanFwd(bb)];
             return s;
         }
 
-        // int score = INT8_MIN;
-        // uint16_t bb = b->legalMoves();
-        // for (; bb; bb &= bb - 1) 
-        // {
-        //     const int i = 
-        //     8 - bitScanFwd(bb);
-        //     b->mark<A>(i);
-        //     score = std::max
-        //     (score,
-        //         -alpha_beta<~A>
-        //         (
-        //             b, depth + 1,
-        //             -o, -a
-        //         )
-        //     );
-        //     b->mark<A>(i);
-        //     a = score;
-        //     if (a >= o) return score;
-        // }
-        // return score;
-        
-        int score = A == X ? 
-            INT8_MIN : INT8_MAX;
+        int score = INT8_MIN;
         uint16_t bb = b->legalMoves();
         for (; bb; bb &= bb - 1) 
         {
             const int i = 
             8 - bitScanFwd(bb);
-            if constexpr (A == X) 
-            {
-                b->mark<X>(i);
-                score = std::max
-                (score,
-                    alpha_beta<~A>
-                    (
-                        b, depth + 1,
-                        a, o
-                    )
-                );
-                b->mark<X>(i);
-                a = score;
-            } 
-            else 
-            {
-                b->mark<O>(i);
-                score = std::min
-                (score,
-                    alpha_beta<~A>
-                    (
-                        b, depth + 1,
-                        a, o
-                    )
-                );
-                b->mark<O>(i);
-                o = score;
-            }
+            b->mark<A>(i);
+            score = std::max
+            (score,
+                -nega_ab<~A>
+                (
+                    b, depth + 1,
+                    -o, -a
+                )
+            );
+            b->mark<A>(i);
+            a = score;
             if (a >= o) return score;
         }
         return score;
@@ -317,30 +278,44 @@ namespace opponent {
          */
         int l;
 
-        if(ax == X)
-            l = alpha_beta<X>
+        if(ax == X) {
+            l = -nega_ab<X>
             (
                 bx, 0,
                 INT8_MIN, INT8_MAX
             );
-        else
-            l = alpha_beta<O>
+            if(l == 0) 
+            {
+                winO += n->v = 0.5;
+                winX += 0.5;
+            }
+            else 
+            {
+                const double d = 0.5 / l;
+                winO += n->v = 
+                    (l > 0) * (1.0 - d) + 
+                    (l < 0) * -d;
+                winX += 1.0 - n->v;
+            }
+        } else {
+            l = -nega_ab<O>
             (
                 bx, 0,
                 INT8_MIN, INT8_MAX
             );
-        if(l == 0) 
-        {
-            winO += n->v = 0.5;
-            winX += 0.5;
-        } 
-        else 
-        {
-            const double d = 0.5 / l;
-            winX += n->v =
-                (l > 0) * (1.0 - d) +
-                (l < 0) * -d;
-            winO += 1.0 - n->v;
+            if(l == 0) 
+            {
+                winO += n->v = 0.5;
+                winX += 0.5;
+            }
+            else 
+            {
+                const double d = 0.5 / l;
+                winX += n->v = 
+                    (l > 0) * (1.0 - d) + 
+                    (l < 0) * -d;
+                winO += 1.0 - n->v;
+            }
         }
         total += n->n = 1.0;
     }
@@ -447,6 +422,27 @@ namespace opponent {
         int l = treeWalk(n, 0);
         std::cout << "Node Count:" << l << '\n';
         return (n = selectNode(n))->move;
+        // int score = INT8_MIN;
+        // int move = -1;
+        // uint16_t bb = b->legalMoves();
+        // for (; bb; bb &= bb - 1) 
+        // {
+        //     const int i = 
+        //     8 - bitScanFwd(bb);
+        //     b->mark<X>(i);
+        //     int u = -nega_ab<O>
+        //         (
+        //             b, 0,
+        //             INT8_MIN, INT8_MAX
+        //         );
+        //     std::cout << "YUP " << u << '\n';
+        //     if(u > score) {
+        //         score = u;
+        //         move = i;
+        //     }
+        //     b->mark<X>(i);
+        // }
+        // return move;
     }
 }
 

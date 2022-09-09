@@ -243,14 +243,9 @@ namespace opponent {
 
         /**
          * (2) Expansion.
-         * We now have
-         * evidence that this
-         * node is worth
-         * expanding. Expand
-         * the node and rollout
-         * random simulations
-         * from each of its
-         * children.
+         * Expand the node and 
+         * simulate play beneath
+         * each of its children.
          */
         uint16_t
         bb = b->legalMoves();

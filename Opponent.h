@@ -17,6 +17,7 @@ namespace opponent {
     using bit::O;
     using bit::Node;
     using bit::Alliance;
+    using bit::bitScanFwd
     using std::vector;
     using std::stack;
 
@@ -56,12 +57,12 @@ namespace opponent {
             (bb = b->get<X>(); 
                 bb; bb &= bb - 1)
                 s += pieceVal
-                [bit::bitScanFwd(bb)];
+                [bitScanFwd(bb)];
             for 
             (bb = b->get<O>(); 
                 bb; bb &= bb - 1)
                 s -= pieceVal
-                [bit::bitScanFwd(bb)];
+                [bitScanFwd(bb)];
             return s;
         }
 
@@ -71,7 +72,7 @@ namespace opponent {
         for (; bb; bb &= bb - 1) 
         {
             const int i = 
-            8 - bit::bitScanFwd(bb);
+            8 - bitScanFwd(bb);
             if (MAX) 
             {
                 b->mark<X>(i);
@@ -261,7 +262,7 @@ namespace opponent {
         {
             Node* n = new Node
             (
-                8 - bit::bitScanFwd(bb), 
+                8 - bitScanFwd(bb), 
                 ~x->a, x
             );
             b->mark(n->a, n->move);
@@ -296,19 +297,24 @@ namespace opponent {
         int l;
 
         if(ax == X)
-            l = alphaOmega<true>(
+            l = alphaOmega<true>
+            (
                 bx, 0,
                 INT8_MIN, INT8_MAX
             );
         else
-            l = alphaOmega<false>(
+            l = alphaOmega<false>
+            (
                 bx, 0,
                 INT8_MIN, INT8_MAX
             );
-        if(l == 0) {
+        if(l == 0) 
+        {
             winO += n->v = 0.5;
             winX += 0.5;
-        } else {
+        } 
+        else 
+        {
             const double d = 0.5 / l;
             winX += n->v =
                 (l > 0) * (1.0 - d) +

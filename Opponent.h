@@ -30,8 +30,8 @@ namespace opponent {
             1, 0, 1
         };
 
-    template<bool MAX>
-    inline int alphaOmega
+    template<Alliance A>
+    inline int alpha_beta
         (
         Board *const b,
         const int depth,
@@ -66,41 +66,24 @@ namespace opponent {
             return s;
         }
 
-        int score = MAX ? 
+        int score = A == X ? 
             INT8_MIN : INT8_MAX;
-        uint16_t bb = b->get<X>();
+        uint16_t bb = b->get<A>();
         for (; bb; bb &= bb - 1) 
         {
             const int i = 
             8 - bitScanFwd(bb);
-            if constexpr (MAX) 
-            {
-                b->mark<X>(i);
+            b->mark<A>(i);
                 score = std::max
                 (score,
-                    alphaOmega<false>
+                    -alpha_beta<~A>
                     (
                         b, depth + 1,
-                        a, o
+                        -a, -o
                     )
                 );
-                b->mark<X>(i);
-                a = score;
-            } 
-            else 
-            {
-                b->mark<O>(i);
-                score = std::min
-                (score,
-                    alphaOmega<true>
-                    (
-                        b, depth + 1,
-                        a, o
-                    )
-                );
-                b->mark<O>(i);
-                o = score;
-            }
+            b->mark<A>(i);
+            a = score;
             if (a >= o) return score;
         }
         return score;
@@ -297,13 +280,13 @@ namespace opponent {
         int l;
 
         if(ax == X)
-            l = alphaOmega<true>
+            l = alpha_beta<X>
             (
                 bx, 0,
                 INT8_MIN, INT8_MAX
             );
         else
-            l = alphaOmega<false>
+            l = alpha_beta<O>
             (
                 bx, 0,
                 INT8_MIN, INT8_MAX

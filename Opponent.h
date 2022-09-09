@@ -56,16 +56,12 @@ namespace opponent {
             (bb = b->get<X>(); 
                 bb; bb &= bb - 1)
                 s += pieceVal
-                [
-                    bit::bitScanFwd(bb)
-                ];
+                [bit::bitScanFwd(bb)];
             for 
             (bb = b->get<O>(); 
                 bb; bb &= bb - 1)
                 s -= pieceVal
-                [
-                    bit::bitScanFwd(bb)
-                ];
+                [bit::bitScanFwd(bb)];
             return s;
         }
 

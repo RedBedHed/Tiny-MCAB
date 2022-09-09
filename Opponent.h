@@ -113,7 +113,7 @@ namespace opponent {
     (Board*, double&, double&, double&, Node*);
     void old_simulate
     (Board*, double&, double&, double&, Alliance);
-    void new_simulate
+    void simulate
     (Board*, double&, double&, double&, Alliance, Node*);
     void back_propagate
     (Board*, double&, double&, double&, Node*, Node*);

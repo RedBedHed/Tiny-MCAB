@@ -121,7 +121,7 @@ namespace opponent {
         return 
             (ni <= 0)? DBL_MAX :
             (vi / ni) +
-            1.05 * std::sqrt
+            1.01 * std::sqrt
             (std::log(n) / ni);
     }
 
@@ -319,10 +319,10 @@ namespace opponent {
                 winX += 0.5;
             } else {
                 const double d = 0.5 / l;
-                winO += n->v =
+                winX += n->v =
                     (l > 0) * (1.0 - d) +
                     (l < 0) * -d;
-                winX += 1.0 - n->v;
+                winO += 1.0 - n->v;
             }
         }
         total += n->n = 1.0;
@@ -443,7 +443,7 @@ namespace opponent {
     inline int search(Board * const b, Node*& n, bool f) 
     {
         clock_t const time = clock();
-        int i = f? 100000: 10000;
+        int i = f? 10000: 1000;
         do select<false>(b, n);
         while((clock() - time) < i);
         int l = treeWalk(n, 0);

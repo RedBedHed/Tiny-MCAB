@@ -73,7 +73,7 @@ namespace opponent {
         {
             const int i = 
             8 - bitScanFwd(bb);
-            if (MAX) 
+            if constexpr (MAX) 
             {
                 b->mark<X>(i);
                 score = std::max

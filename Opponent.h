@@ -17,7 +17,7 @@ namespace opponent {
     using bit::O;
     using bit::Node;
     using bit::Alliance;
-    using bit::bitScanFwd
+    using bit::bitScanFwd;
     using std::vector;
     using std::stack;
 

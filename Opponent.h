@@ -49,7 +49,6 @@ namespace opponent {
 
         if(depth == 2) {
             
-
             // Evaluate ?
             int s = 0;
             uint16_t bb; 
@@ -93,6 +92,7 @@ namespace opponent {
         }
         return score;
     }
+
 
     template<bool>
     void select

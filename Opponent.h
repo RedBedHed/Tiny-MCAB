@@ -292,38 +292,27 @@ namespace opponent {
          * and determine win
          * probability.
          */
-        if(ax == X) {
-            const int l = 
-            alphaOmega<true>(
+        int l;
+
+        if(ax == X)
+            l = alphaOmega<true>(
                 bx, 0,
                 INT8_MIN, INT8_MAX
             );
-            if(l == 0) {
-                winO += n->v = 0.5;
-                winX += 0.5;
-            } else {
-                const double d = 0.5 / l;
-                winX += n->v = 
-                    (l > 0) * (1.0 - d) +
-                    (l < 0) * -d;
-                winO += 1.0 - n->v;
-            }
+        else
+            l = alphaOmega<false>(
+                bx, 0,
+                INT8_MIN, INT8_MAX
+            );
+        if(l == 0) {
+            winO += n->v = 0.5;
+            winX += 0.5;
         } else {
-            const int l = 
-            alphaOmega<false>(
-                bx, 0,
-                INT8_MIN, INT8_MAX
-            );
-            if(l == 0) {
-                winO += n->v = 0.5;
-                winX += 0.5;
-            } else {
-                const double d = 0.5 / l;
-                winX += n->v =
-                    (l > 0) * (1.0 - d) +
-                    (l < 0) * -d;
-                winO += 1.0 - n->v;
-            }
+            const double d = 0.5 / l;
+            winX += n->v =
+                (l > 0) * (1.0 - d) +
+                (l < 0) * -d;
+            winO += 1.0 - n->v;
         }
         total += n->n = 1.0;
     }

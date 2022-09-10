@@ -22,6 +22,7 @@ namespace opponent {
     using std::stack;
 
     constexpr int HIGH_SCORE = 10;
+    constexpr double MAX_MIN = 20.0;
 
     constexpr uint8_t pieceVal[] = 
         { 
@@ -278,8 +279,6 @@ namespace opponent {
          */
         int l;
 
-        constexpr double denom = 
-            INT8_MAX - INT8_MIN;
         if(ax == X) {
             l = -nega_ab<X>
             (
@@ -287,8 +286,9 @@ namespace opponent {
                 INT8_MIN, INT8_MAX
             );
             winO += n->v = 
-                (double)(l - INT8_MIN) / 
-                denom;
+                (double)
+                (l + HIGH_SCORE) / 
+                MAX_MIN;
             winX += 1.0 - n->v;
         } else {
             l = -nega_ab<O>
@@ -297,8 +297,9 @@ namespace opponent {
                 INT8_MIN, INT8_MAX
             );
             winX += n->v = 
-                (double)(l - INT8_MIN) / 
-                denom;
+                (double)
+                (l + HIGH_SCORE) / 
+                MAX_MIN;
             winO += 1.0 - n->v;
         }
         total += n->n = 1.0;

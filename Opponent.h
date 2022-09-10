@@ -278,7 +278,7 @@ namespace opponent {
          */
         int l;
 
-        constexpr int denom = 
+        constexpr double denom = 
             INT8_MAX - INT8_MIN;
         if(ax == X) {
             l = -nega_ab<X>
@@ -287,7 +287,9 @@ namespace opponent {
                 INT8_MIN, INT8_MAX
             );
             winO += n->v = 
-                (l - INT8_MIN) / denom;
+                (double)(l - INT8_MIN) / 
+                denom;
+            std::cout << l << '\n';
             winX += 1.0 - n->v;
         } else {
             l = -nega_ab<O>
@@ -296,7 +298,8 @@ namespace opponent {
                 INT8_MIN, INT8_MAX
             );
             winX += n->v = 
-                (l - INT8_MIN) / denom;
+                (double)(l - INT8_MIN) / 
+                denom;
             winO += 1.0 - n->v;
         }
         total += n->n = 1.0;

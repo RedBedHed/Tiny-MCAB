@@ -289,7 +289,6 @@ namespace opponent {
             winO += n->v = 
                 (double)(l - INT8_MIN) / 
                 denom;
-            std::cout << l << '\n';
             winX += 1.0 - n->v;
         } else {
             l = -nega_ab<O>
